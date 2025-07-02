@@ -13,14 +13,36 @@ let g:_vsh_fsharp_tags = ['fsharp', 'fs']
 let g:_vsh_csharp_tags = ['csharp', 'cs']
 let g:_vsh_java_tags = ['java']
 
+let cpp_style_tag_pattern = '^\s*[^\.=]*[({]\s*$'
+
 let g:vim_sticky_header_runner_configs = [
   \ {
-  \ "file_types": g:_vsh_sh_tags,
+  \ "file_types": g:_vsh_sh_tags + g:_vsh_zsh_tags + g:_vsh_bash_tags,
   \ "file_extensions": g:_vsh_sh_tags,
   \ "tag_patterns": ['^\s*\(function\)'],
   \ "fn_name": '_VSH_RunSh',
   \ },
+  \ {
+  \ "file_types": g:_vsh_java_tags,
+  \ "file_extensions": g:_vsh_java_tags,
+  \ "tag_patterns": [] + [g:cpp_style_tag_pattern],
+  \ "fn_name": '_VSH_RunJava',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_csharp_tags,
+  \ "file_extensions": g:_vsh_csharp_tags,
+  \ "tag_patterns": [] + [g:cpp_style_tag_pattern],
+  \ "fn_name": '_VSH_RunCsharp',
+  \ },
 \ ]
+
+function! _VSH_RunCsharp(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunJava(args)
+  return _VSH_RunBasic(a:args)
+endfunction
 
 function! _VSH_RunSh(args)
   return _VSH_RunBasic(a:args)
