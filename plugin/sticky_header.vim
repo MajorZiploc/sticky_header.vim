@@ -172,7 +172,7 @@ function! _VSH_IsTagLine(line_text, tag_patterns)
   return -1
 endfunction
 
-function! _VSH_FindTagLineUpwards(args) abort
+function! _VSH_FindTagLineUpwards(args) " abort <- NOTE: add 'abort' will error out if function exists already
   let tag_patterns = a:args['tag_patterns']
   let lnum = line('.')
   while lnum >= 1
@@ -186,7 +186,7 @@ function! _VSH_FindTagLineUpwards(args) abort
   return {'line_num':-1,'line_content':''}
 endfunction
 
-function! s:VSH_OpenHeaderScratch() abort
+function! s:VSH_OpenHeaderScratch()
   new
   resize 1
   setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile number
@@ -194,7 +194,7 @@ endfunction
 
 command! VSHHeaderScratch call s:VSH_OpenHeaderScratch()
 
-function! _VSH_MakeHeader(args) abort
+function! _VSH_MakeHeader(args)
   let line_res = _VSH_FindTagLineUpwards(a:args)
   if get(line_res, 'line_num', -1) != -1
     horizontal leftabove VSHHeaderScratch
@@ -208,7 +208,7 @@ function! _VSH_MakeHeader(args) abort
   endif
 endfunction
 
-function! _VSH_CloseHeaderIfExists() abort
+function! _VSH_CloseHeaderIfExists()
   let cur_win = winnr()
   let cur_pos = win_screenpos(cur_win)[0]
   " Check if there's a window above by comparing screen row positions
@@ -259,7 +259,7 @@ function _VSH_RunCases(file_ext)
   endif
 endfunction
 
-function! VSH_Run() abort
+function! VSH_Run()
   let file_ext = expand('%:e')
   call _VSH_RunCases(file_ext)
 endfunction
