@@ -11,15 +11,20 @@ let g:_vsh_ruby_tags = ['ruby', 'rb']
 let g:_vsh_powershell_tags = ['ps1', 'powershell', 'pwsh']
 let g:_vsh_fsharp_tags = ['fsharp', 'fs']
 let g:_vsh_csharp_tags = ['csharp', 'cs']
+let g:_vsh_cpp_tags = ['cpp']
 let g:_vsh_java_tags = ['java']
+let g:_vsh_gdscript_tags = ['gdscript', 'gd']
+let g:_vsh_glsl_tags = ['glsl']
 
 let cpp_style_tag_pattern = '^\s*[^\.=]*[({]\s*$'
+" TODO: improve fsharp_tag_pattern
+let fsharp_tag_pattern = '^\s*\<\(let\|class\|type\)\>[^;+|]*=\s*$'
 
 let g:vim_sticky_header_runner_configs = [
   \ {
   \ "file_types": g:_vsh_sh_tags + g:_vsh_zsh_tags + g:_vsh_bash_tags,
   \ "file_extensions": g:_vsh_sh_tags,
-  \ "tag_patterns": ['^\s*\(function\)'],
+  \ "tag_patterns": ['^\s*\<\(function\)\>'],
   \ "fn_name": '_VSH_RunSh',
   \ },
   \ {
@@ -34,7 +39,111 @@ let g:vim_sticky_header_runner_configs = [
   \ "tag_patterns": [] + [g:cpp_style_tag_pattern],
   \ "fn_name": '_VSH_RunCsharp',
   \ },
+  \ {
+  \ "file_types": g:_vsh_cpp_tags,
+  \ "file_extensions": g:_vsh_cpp_tags,
+  \ "tag_patterns": [] + [g:cpp_style_tag_pattern],
+  \ "fn_name": '_VSH_RunCpp',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_python_tags,
+  \ "file_extensions": g:_vsh_python_tags,
+  \ "tag_patterns": ['^\s*\<\(def\|class\)\>'],
+  \ "fn_name": '_VSH_RunPython',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_gdscript_tags,
+  \ "file_extensions": g:_vsh_gdscript_tags,
+  \ "tag_patterns": ['^\s*\<\(func\|class\)\>'],
+  \ "fn_name": '_VSH_RunGdscript',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_glsl_tags,
+  \ "file_extensions": g:_vsh_glsl_tags,
+  \ "tag_patterns": [] + [g:cpp_style_tag_pattern],
+  \ "fn_name": '_VSH_RunGlsl',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_bat_tags,
+  \ "file_extensions": g:_vsh_bat_tags,
+  \ "tag_patterns": ['^\s*:\w+\s*$'],
+  \ "fn_name": '_VSH_RunBat',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_perl_tags,
+  \ "file_extensions": g:_vsh_perl_tags,
+  \ "tag_patterns": ['^\s*\<\(sub\|package)\>'],
+  \ "fn_name": '_VSH_RunPerl',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_php_tags,
+  \ "file_extensions": g:_vsh_php_tags,
+  \ "tag_patterns": ['^\s*\<\(function\|class\)\>'],
+  \ "fn_name": '_VSH_RunPhp',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_powershell_tags,
+  \ "file_extensions": g:_vsh_powershell_tags,
+  \ "tag_patterns": ['^\s*\<\(function\)\>'],
+  \ "fn_name": '_VSH_RunPowershell',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_javascript_tags + g:_vsh_typescript_tags,
+  \ "file_extensions": g:_vsh_javascript_tags + _vsh_typescript_tags,
+  \ "tag_patterns": ['^\s*\<\(function\|class\|type\)\>'],
+  \ "fn_name": '_VSH_RunJavascript',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_fsharp_tags,
+  \ "file_extensions": g:_vsh_fsharp_tags,
+  \ "tag_patterns": [fsharp_tag_pattern],
+  \ "fn_name": '_VSH_RunFsharp',
+  \ },
 \ ]
+
+function! _VSH_RunFsharp(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunJavascript(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunPowershell(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunRuby(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunPhp(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunPerl(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunBat(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunGlsl(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunCpp(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunGdscript(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunPython(args)
+  return _VSH_RunBasic(a:args)
+endfunction
 
 function! _VSH_RunCsharp(args)
   return _VSH_RunBasic(a:args)
@@ -131,6 +240,7 @@ endfunction
 
 function _VSH_RunCases(file_ext)
   let case_values = {}
+  let found_runner = -1
   for runner_config in g:vim_sticky_header_runner_configs
     if (_VSH_IsRunner(runner_config, a:file_ext))
       let FuncRef = function(runner_config['fn_name'])
@@ -138,15 +248,18 @@ function _VSH_RunCases(file_ext)
         \'runner_config': runner_config
       \}
       let case_values = FuncRef(func_input)
+      let found_runner = 1
       break
     endif
   endfor
+  if found_runner == -1
+    echohl WarningMsg
+    echo "No Header Runner!"
+    echohl None
+  endif
 endfunction
 
 function! VSH_Run() abort
   let file_ext = expand('%:e')
   call _VSH_RunCases(file_ext)
 endfunction
-
-" TODO: move out of plugin and into dotfiles pluggin-settings
-nmap <leader>sh :call VSH_Run()<CR>
