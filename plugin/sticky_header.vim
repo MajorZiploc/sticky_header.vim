@@ -20,7 +20,7 @@ let g:_vsh_vimscript_tags = ['vim', 'vimscript']
 
 let cpp_style_tag_pattern = '^\s*[^\.=]*[({]\s*$'
 " TODO: improve fsharp_tag_pattern
-let fsharp_tag_pattern = '^\s*\<\(let\|class\|type\)\>[^;+|]\+\s\+[^;+|]\+='
+let fsharp_tag_pattern = '^\s*\<\(let\|class\|type\)\>\s\+[^;+|]\+\s\+[^;+|]\+='
 
 let g:vim_sticky_header_runner_configs = [
   \ {
