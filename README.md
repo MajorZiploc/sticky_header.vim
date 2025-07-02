@@ -73,7 +73,7 @@ call plug#end()
 ```vim
 lvim.plugins = {
   " rest of your plugins ...
-  { "MajorZiploc/code_runner.vim" },
+  { "MajorZiploc/sticky_header.vim" },
   " rest of your plugins ...
 }
 ```
