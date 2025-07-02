@@ -15,6 +15,8 @@ let g:_vsh_cpp_tags = ['cpp']
 let g:_vsh_java_tags = ['java']
 let g:_vsh_gdscript_tags = ['gdscript', 'gd']
 let g:_vsh_glsl_tags = ['glsl']
+let g:_vsh_lua_tags = ['lua']
+let g:_vsh_vimscript_tags = ['vim', 'vimscript']
 
 let cpp_style_tag_pattern = '^\s*[^\.=]*[({]\s*$'
 " TODO: improve fsharp_tag_pattern
@@ -58,16 +60,28 @@ let g:vim_sticky_header_runner_configs = [
   \ "fn_name": '_VSH_RunGlsl',
   \ },
   \ {
-  \ "file_types": g:_vsh_powershell_tags,
-  \ "file_extensions": g:_vsh_powershell_tags,
-  \ "tag_patterns": ['^\s*\<\(function\)\>'],
-  \ "fn_name": '_VSH_RunPowershell',
-  \ },
-  \ {
   \ "file_types": g:_vsh_csharp_tags,
   \ "file_extensions": g:_vsh_csharp_tags,
   \ "tag_patterns": [] + [g:cpp_style_tag_pattern],
   \ "fn_name": '_VSH_RunCsharp',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_vimscript_tags,
+  \ "file_extensions": g:_vsh_vimscript_tags,
+  \ "tag_patterns": ['^\s*\<\(function\)\>'],
+  \ "fn_name": '_VSH_RunVimscript',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_lua_tags,
+  \ "file_extensions": g:_vsh_lua_tags,
+  \ "tag_patterns": ['^\s*\<\(function\)\>', '^\s*local.*=\s*\<\(function\)\>'],
+  \ "fn_name": '_VSH_RunLua',
+  \ },
+  \ {
+  \ "file_types": g:_vsh_powershell_tags,
+  \ "file_extensions": g:_vsh_powershell_tags,
+  \ "tag_patterns": ['^\s*\<\(function\)\>'],
+  \ "fn_name": '_VSH_RunPowershell',
   \ },
   \ {
   \ "file_types": g:_vsh_perl_tags,
@@ -100,6 +114,14 @@ let g:vim_sticky_header_runner_configs = [
   \ "fn_name": '_VSH_RunBat',
   \ },
 \ ]
+
+function! _VSH_RunVimscript(args)
+  return _VSH_RunBasic(a:args)
+endfunction
+
+function! _VSH_RunLua(args)
+  return _VSH_RunBasic(a:args)
+endfunction
 
 function! _VSH_RunFsharp(args)
   return _VSH_RunBasic(a:args)
