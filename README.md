@@ -80,4 +80,4 @@ lvim.plugins = {
 
 ## Keywords:
 
-sql_client, nosql_client, execute_code, execute_file, sql, redis, mongo, sql, nosql, execute_code_block key_value_store_client
+header, context, find_function, find_method, find_class, find_context, find_header
