@@ -1,12 +1,12 @@
-# code_runner.vim
+# sticky_header.vim
 
-A vim/neovim plugin to run selected chunks of code or whole files. Can run locally or within docker or k8s containers
+A vim/neovim plugin to get what scope closest you are currently in (function, class, other tags)
 
 Use cases:
-- light weight database client by executing chunks of code and respecting db env vars
-- light weight redis client by executing chunks of commands and respecting redis env vars
-- execute tagged code blocks in markdown files
-- execute chunks of code or whole files for script languages
+- light weight sticky_header plugin if you dont want a bunch of heavy dependencies
+
+
+TODO: change the rest
 
 # Table of contents
 1. [Motivation](#motivation)
