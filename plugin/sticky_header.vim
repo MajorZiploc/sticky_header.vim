@@ -172,7 +172,7 @@ function! _VSH_IsTagLine(line_text, tag_patterns)
   return -1
 endfunction
 
-function! _VSH_FindTagLineUpwards(args) " abort <- NOTE: add 'abort' will error out if function exists already
+function! _VSH_FindTagLineUpwards(args) " abort <- NOTE: 'abort' will end a function when an error occurs - Look into its compatibility before using it
   let tag_patterns = a:args['tag_patterns']
   let lnum = line('.')
   while lnum >= 1
