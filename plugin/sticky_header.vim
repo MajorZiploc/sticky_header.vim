@@ -17,7 +17,7 @@ let g:vim_sticky_header_runner_configs = [
   \ {
   \ "file_types": g:_vsh_sh_tags,
   \ "file_extensions": g:_vsh_sh_tags,
-  \ "tag_pattern": '^\s*\(function\)',
+  \ "tag_patterns": ['^\s*\(function\)'],
   \ "fn_name": '_VSH_RunSh',
   \ },
 \ ]
@@ -32,13 +32,21 @@ function! _VSH_RunBasic(args)
   call _VSH_MakeHeader(runner_config)
 endfunction
 
+function! _VSH_IsTagLine(line_text, tag_patterns)
+  for tag_pattern in a:tag_patterns
+    if match(a:line_text, tag_pattern) != -1
+      return 1
+    endif
+  endfor
+  return -1
+endfunction
+
 function! _VSH_FindTagLineUpwards(args) abort
-  let tag_pattern = a:args['tag_pattern']
+  let tag_patterns = a:args['tag_patterns']
   let lnum = line('.')
   while lnum >= 1
     let line_text = getline(lnum)
-    " if match(line_text, '^\s*\(func\|class\)') != -1
-    if match(line_text, tag_pattern) != -1
+    if _VSH_IsTagLine(line_text, tag_patterns) != -1
       return {'line_num':lnum,'line_content':line_text}
     endif
     let lnum -= 1
