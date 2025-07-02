@@ -224,7 +224,7 @@ function! _VSH_CloseHeaderIfExists()
   endfor
 endfunction
 
-function _VSH_IsLabelMemOf(actual_label, expected_labels)
+function! _VSH_IsLabelMemOf(actual_label, expected_labels)
   for expected_label in a:expected_labels
     if (a:actual_label == expected_label)
       return 1
@@ -233,12 +233,12 @@ function _VSH_IsLabelMemOf(actual_label, expected_labels)
   return 0
 endfunction
 
-function _VSH_IsRunner(runner_config, file_ext)
+function! _VSH_IsRunner(runner_config, file_ext)
   return _VSH_IsLabelMemOf(a:file_ext, a:runner_config['file_extensions'])
     \  || _VSH_IsLabelMemOf(&filetype, a:runner_config['file_types'])
 endfunction
 
-function _VSH_RunCases(file_ext)
+function! _VSH_RunCases(file_ext)
   let case_values = {}
   let found_runner = -1
   for runner_config in g:vim_sticky_header_runner_configs
