@@ -5,6 +5,11 @@ A vim/neovim plugin to get what scope closest you are currently in (function, cl
 Use cases:
 - light weight sticky_header plugin if you dont want a bunch of heavy dependencies
 
+Answers the questions:
+  - what function am I currently in?
+  - what class am I currently in?
+  - what <tag_or_symbol> am I currently in?
+
 # Table of contents
 1. [Motivation](#motivation)
 2. [Supported editors](#supported_editors)
