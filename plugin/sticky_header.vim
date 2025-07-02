@@ -1,4 +1,4 @@
-function! FindTagLineUpwards() abort
+function! VSH_FindTagLineUpwards() abort
   let lnum = line('.')
   while lnum >= 1
     let line_text = getline(lnum)
@@ -12,7 +12,7 @@ function! FindTagLineUpwards() abort
 endfunction
 
 function! ShowFindFuncLineUpwards() abort
-  echo FindTagLineUpwards()
+  echo VSH_FindTagLineUpwards()
 endfunction
 
 command! HeaderScratch call s:OpenHeaderScratch()
@@ -23,8 +23,8 @@ function! s:OpenHeaderScratch() abort
   setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile number
 endfunction
 
-function! MakeHeader() abort
-  let line_res = FindTagLineUpwards()
+function! VSH_MakeHeader() abort
+  let line_res = VSH_FindTagLineUpwards()
   if get(line_res, 'line_num', -1) != -1
     horizontal leftabove HeaderScratch
     let formatted_res = get(line_res, 'line_num') . ': ' . get(line_res, 'line_content', '')
@@ -37,7 +37,7 @@ function! MakeHeader() abort
   endif
 endfunction
 
-function! CloseHeaderIfExists() abort
+function! VSH_CloseHeaderIfExists() abort
   let cur_win = winnr()
   let cur_pos = win_screenpos(cur_win)[0]
   " Check if there's a window above by comparing screen row positions
@@ -53,10 +53,10 @@ function! CloseHeaderIfExists() abort
   endfor
 endfunction
 
-function! VSH_make_header() abort
-  call CloseHeaderIfExists()
-  call MakeHeader()
+function! VSH_Run() abort
+  call VSH_CloseHeaderIfExists()
+  call VSH_MakeHeader()
 endfunction
 
 " TODO: move out of plugin and into dotfiles pluggin-settings
-nmap <leader>sh :call VSH_make_header()<CR>
+nmap <leader>sh :call VSH_Run()<CR>
